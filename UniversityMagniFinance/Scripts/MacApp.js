@@ -14,3 +14,19 @@ app.controller("SubjectController", function ($scope, $http) {
         $scope.courses = result.data;
     })
 })
+
+app.controller("GradeController", function ($scope, $http) {
+    $http({
+        method: 'GET',
+        url: '/Grade/GetStudents'
+    }).then(function (result) {
+        $scope.students = result.data;
+    })
+
+    $http({
+        method: 'GET',
+        url: '/Grade/GetSubjects'
+    }).then(function (result) {
+        $scope.subjects = result.data;
+    })
+})

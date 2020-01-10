@@ -1,0 +1,44 @@
+﻿@model IEnumerable<UniversityMagniFinance.Business.GradesInformation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>List of Grades</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Student
+        </th>
+        <th>
+            Subject
+        </th>
+        <th>
+            Grade
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Student)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Grade)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { controller = "Grade", id = item.ID }, new { @class = "editButton" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    @Html.ActionLink("New", "Create", null, null, new { @class = "btn btn-success" })
+</p>
