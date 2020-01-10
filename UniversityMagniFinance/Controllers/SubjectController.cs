@@ -11,133 +11,145 @@ using UniversityMagniFinance.Models;
 
 namespace UniversityMagniFinance.Controllers
 {
-    public class StudentController : Controller
+    public class SubjectController : Controller
     {
         private UniversityContext db = new UniversityContext();
 
-        // GET: Students
+        // GET: Subject
         public ActionResult Index()
         {
-            var lst = db.Students.ToList();
+            var lst = db.Subjects.ToList();
 
-            List<Business.StudentsInformation> v = new List<Business.StudentsInformation>();
+            List<Business.SubjectsInformation> v = new List<Business.SubjectsInformation>();
 
-            foreach(Student student in lst)
+            foreach (Subject subject in lst)
             {
-                var grades = db.Grades.Where(w => w.StudentID == student.ID).ToList();
+                int grades = db.Grades.Where(w => w.SubjectID == subject.ID).Select(s => s.ID).Count();
 
-                List<Business.GradesInformation> gInformation = new List<Business.GradesInformation>();
+                decimal? sum = db.Grades.Where(w => w.SubjectID == subject.ID).Select(s => s.Grade).Sum();
 
-                foreach (Grades grade in grades)
+                decimal? average = 0;
+
+                if (sum != null && grades > 0)
                 {
-                    gInformation.Add(new Business.GradesInformation
-                    {
-                        Grade = grade.Grade,
-                        Name = db.Subjects.Where(w => w.ID == grade.SubjectID).Select(s => s.Name).FirstOrDefault()
-                    });
+                    average = sum / grades;
                 }
 
-                v.Add(new Business.StudentsInformation
+                v.Add(new Business.SubjectsInformation
                 {
-                    Student = student,
-                    GradesInformation = gInformation
+                    ID = subject.ID,
+                    Name = subject.Name,
+                    Teacher = db.Teachers.Find(subject.TeacherID),
+                    AverageGrade = average
                 });
             }
 
             return View(v);
         }
 
-        // GET: Students/Details/5
+        public JsonResult GetTeachers()
+        {
+            var teacher = db.Teachers.ToList();
+            return Json(teacher, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCourses()
+        {
+            var teacher = db.Courses.ToList();
+            return Json(teacher, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: Subject/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
+            Subject subject = db.Subjects.Find(id);
+            if (subject == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(subject);
         }
 
-        // GET: Students/Create
+        // GET: Subject/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Students/Create
+        // POST: Subject/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,RegistrantionNumber,BirthDay")] Student student)
+        public ActionResult Create([Bind(Include = "ID,Name,CourseID,TeacherID")] Subject subject)
         {
             if (ModelState.IsValid)
             {
-                db.Students.Add(student);
+                db.Subjects.Add(subject);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(student);
+            return View(subject);
         }
 
-        // GET: Students/Edit/5
+        // GET: Subject/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
+            Subject subject = db.Subjects.Find(id);
+            if (subject == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(subject);
         }
 
-        // POST: Students/Edit/5
+        // POST: Subject/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,RegistrantionNumber,BirthDay")] Student student)
+        public ActionResult Edit([Bind(Include = "ID,Name,CourseID,TeacherID")] Subject subject)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
+                db.Entry(subject).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(student);
+            return View(subject);
         }
 
-        // GET: Students/Delete/5
+        // GET: Subject/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
-            if (student == null)
+            Subject subject = db.Subjects.Find(id);
+            if (subject == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(subject);
         }
 
-        // POST: Students/Delete/5
+        // POST: Subject/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
+            Subject subject = db.Subjects.Find(id);
+            db.Subjects.Remove(subject);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

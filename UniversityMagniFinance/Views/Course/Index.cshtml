@@ -1,24 +1,21 @@
 ﻿@model IEnumerable<UniversityMagniFinance.Business.CoursesInformation>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Courses";
 }
 
-<h2>Index</h2>
+<h2>List of Courses</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            Teachers
+            Number of Teachers
         </th>
         <th>
-            Students
+            Number of Students
         </th>
         <th>
             Grade Average
@@ -41,11 +38,13 @@
         @Html.DisplayFor(modelItem => item.AverageGrade)
     </td>
     <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+        @Html.ActionLink("Edit", "Edit", new { controller = "Course", id = item.ID }, new { @class = "editButton" })
     </td>
 </tr>
 }
 
 </table>
+
+<p>
+    @Html.ActionLink("New", "Create", null, null, new { @class = "btn btn-success" })
+</p>

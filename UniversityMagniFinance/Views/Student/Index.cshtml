@@ -1,45 +1,66 @@
-﻿@model IEnumerable<UniversityMagniFinance.Models.Student>
+﻿@model IEnumerable<UniversityMagniFinance.Business.StudentsInformation>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>List of Students</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Student.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RegistrantionNumber)
+            Registrantion Number
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BirthDay)
+            Birthday
         </th>
-        <th></th>
+        <th>
+            Subjects
+        </th>
+        <th>
+
+        </th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RegistrantionNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BirthDay)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Student.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Student.RegistrantionNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Student.BirthDay)
+    </td>
+    <td>
+        @foreach (var itemGrade in item.GradesInformation)
+        {
+            <table>
+                <tr>
+                    <th>
+
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItemGrade => itemGrade.Name)   @Html.DisplayFor(modelItemGrade => itemGrade.Grade)
+                    </td>
+                </tr>
+            </table>
+        }
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { controller = "Student", id = item.Student.ID }, new { @class = "editButton" })
+    </td>
+</tr>
 }
 
 </table>
+
+<p>
+    @Html.ActionLink("New", "Create", null, null, new { @class = "btn btn-success" })
+</p>

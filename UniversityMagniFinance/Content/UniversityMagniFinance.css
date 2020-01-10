@@ -1,0 +1,44 @@
+﻿a.LinkHome {
+    display: block;
+    width: 150px;
+    height: 70px;
+    text-indent: -9999px; /* hides the link text */
+}
+
+a.LinkHome img{
+    width: 100%;
+    display: block; 
+}
+
+.navbar{
+    background-color: transparent !important
+}
+
+h2 {
+    margin-top: 40px;
+    color: #ff5252;
+    font-size: 30px;
+    font-family: 'Signika', sans-serif;
+    padding-bottom: 10px;
+}
+
+.navbar-nav > li > a {
+    padding-top: 45px !important;
+    padding-left: 45px !important;
+}
+
+li:hover, li:active {
+    background-color: #9d9d9d !important;
+    color: #fff;
+    border-radius: .5em;
+    padding-bottom: .125em;
+}
+
+.editButton {
+    /* change the image path as per your design */
+    background: url(Images/editar.jpg) no-repeat top left;
+    display: block; /*change width and height as per your need*/
+    width: 50px;
+    height: 20px; /* hides the link text */
+    text-indent: -9999px;
+}
